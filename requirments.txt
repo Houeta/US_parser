@@ -1,0 +1,16 @@
+##### Requirments for telegram_bot #####
+python-dotenv
+dotenv-python
+telebot
+
+
+##### Requirments for my_parser #####
+requests
+beautifulsoup4
+fake-useragent
+urllib3
+
+
+##### Requirments for parse #####
+openpyxl
+pandas
