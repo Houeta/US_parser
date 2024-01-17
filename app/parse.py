@@ -23,7 +23,7 @@ parser.add_argument('-e', '--end', type=str, help="End timestamp")
 # group.add_argument('-r', '--verbose', action='count', help='Produce verbose output. Use -vv for extra verbose output.', default=0)
 args: Namespace = parser.parse_args()
 
-load_dotenv('.env')
+# load_dotenv('.env')
 us_auth_link = 'http://us3.radionet.com.ua/oper/index.php?w=555'
 abills_auth_link = 'https://bill-admin2.radionet.com.ua:9443/admin/index.cgi?DOMAIN_ID=&language=english'
 
@@ -71,7 +71,7 @@ def save_in_excel_file(data, title, excel_workfile):
     
     headings = list(data[0].keys())
     
-    ws.append([f'Історія підключень за {us_petrivskyy_params['date_finish2_date1']}-{us_petrivskyy_params['date_finish2_date2']} (Петрівський Володимир Романович)', ])
+    ws.append([f"Історія підключень за {us_petrivskyy_params['date_finish2_date1']}-{us_petrivskyy_params['date_finish2_date2']} (Петрівський Володимир Романович)", ])
     ws.merge_cells(start_row=1, end_row=1, start_column=1, end_column=len(headings))
     ws.append([""])
     ws.append(headings)

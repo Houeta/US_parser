@@ -1,0 +1,26 @@
+name: Deploy telegram bot on self-hosted runner
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: self-hosted
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Run playbook
+        uses: dawidd6/action-ansible-playbook@v2
+        with:
+          playbook: .ansible/playbook.yml
+          inventory: localhost
+          options: |
+            -e GH_US_USER=${{secrets.US_USER}}
+            -e GH_US_PASSWORD=${{secrets.US_PASSWORD}}
+            -e GH_API_TELEGRAM=${{secrets.API_TELEGRAM}}
+
+        
+      

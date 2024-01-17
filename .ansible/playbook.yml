@@ -1,0 +1,21 @@
+- name: Build US telegram bot
+  hosts: all
+  tasks:
+    - name: Build docker image
+      docker_image:
+        name: bot_image
+        force_source: true
+        source: build
+        build:
+          dockerfile: .docker/Dockerfile
+
+    - name: Run docker container
+      docker_container:
+        name: bot
+        image: bot_image
+        restart: true
+        recreate: false
+        env:
+          user: "{{ GH_US_USER }}"
+          pass: "{{ GH_US_UPASSWORD}}"
+          API_TELEGRAM: "{{ GH_API_TELEGRAM }}"

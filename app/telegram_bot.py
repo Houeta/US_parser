@@ -6,7 +6,7 @@ import time
 from dotenv import load_dotenv
 from telebot import TeleBot, types
 
-load_dotenv('.env')
+# load_dotenv('.env')
 API_TOKEN = os.environ.get('API_TELEGRAM')
 bot = TeleBot(API_TOKEN)
 is_auth = False
