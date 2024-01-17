@@ -1,5 +1,6 @@
 - name: Build US telegram bot
-  hosts: all
+  hosts: localhost
+  connection: local
   tasks:
     - name: Build docker image
       docker_image:

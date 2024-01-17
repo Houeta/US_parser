@@ -16,7 +16,6 @@ jobs:
         uses: dawidd6/action-ansible-playbook@v2
         with:
           playbook: .ansible/playbook.yml
-          inventory: localhost
           options: |
             -e GH_US_USER=${{secrets.US_USER}}
             -e GH_US_PASSWORD=${{secrets.US_PASSWORD}}
