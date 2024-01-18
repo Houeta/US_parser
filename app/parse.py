@@ -14,6 +14,7 @@ import fake_useragent
 import urllib
 
 from app.modules.my_parser import UsersideParser, AbillsParser
+from app.modules.class_workbook import MyWorkbook
 
 parser = ArgumentParser()
 # group = parser.add_mutually_exclusive_group()
@@ -64,51 +65,65 @@ abills_payload = {
 #         for item in items:
 #             writer.writerow([item['exec_date'], item['task_type'], item['contract_id'], item['name'], item['address']])
 
-def save_in_excel_file(data, title, excel_workfile):
-    wb = Workbook()
-    ws = wb.active
-    ws.title = title
+# def save_in_excel_file(data, title, excel_workfile):
+#     wb = Workbook()
+#     ws = wb.active
+#     ws.title = title
     
-    headings = list(data[0].keys())
+#     headings = list(data[0].keys())
     
-    ws.append([f"Історія підключень за {us_petrivskyy_params['date_finish2_date1']}-{us_petrivskyy_params['date_finish2_date2']} (Петрівський Володимир Романович)", ])
-    ws.merge_cells(start_row=1, end_row=1, start_column=1, end_column=len(headings))
-    ws.append([""])
-    ws.append(headings)
+#     ws.append([f"Історія підключень за {us_petrivskyy_params['date_finish2_date1']}-{us_petrivskyy_params['date_finish2_date2']} (Петрівський Володимир Романович)", ])
+#     ws.merge_cells(start_row=1, end_row=1, start_column=1, end_column=len(headings))
+#     ws.append([""])
+#     ws.append(headings)
     
-    for counter in range(len(data)):
-        metadata = list(data[counter].values())
-        ws.append(metadata)
+#     for counter in range(len(data)):
+#         metadata = list(data[counter].values())
+#         ws.append(metadata)
     
-    for letter in ['A', 'B', 'C', 'D', 'E']:
-        max_width = 0
+#     for letter in ['A', 'B', 'C', 'D', 'E']:
+#         max_width = 0
         
-        for row_number in range(2, ws.max_row + 1):
-            if not ws[f'{letter}{row_number}'].value:
-                continue    
-            elif len(ws[f'{letter}{row_number}'].value) > max_width:
-                max_width = len(ws[f'{letter}{row_number}'].value)
+#         for row_number in range(2, ws.max_row + 1):
+#             if not ws[f'{letter}{row_number}'].value:
+#                 continue    
+#             elif len(ws[f'{letter}{row_number}'].value) > max_width:
+#                 max_width = len(ws[f'{letter}{row_number}'].value)
                 
-        ws.column_dimensions[letter].width = max_width + 1
+#         ws.column_dimensions[letter].width = max_width + 1
     
-    wb.save(excel_workfile)
+#     wb.save(excel_workfile)
     
-def edit_width_for_columns(excel_workfile, ws):
-    for letter in ['A', 'B', 'C', 'D', 'E']:
-        max_width = 0
+# def edit_width_for_columns(excel_workfile, ws):
+#     for letter in ['A', 'B', 'C', 'D', 'E']:
+#         max_width = 0
         
-        for row_number in range(1, ws.max_row + 1):
-            if len(ws[f'{letter}{row_number}'].value) > max_width:
-                max_width = len(ws[f'{letter}{row_number}'].value)
+#         for row_number in range(1, ws.max_row + 1):
+#             if len(ws[f'{letter}{row_number}'].value) > max_width:
+#                 max_width = len(ws[f'{letter}{row_number}'].value)
                 
-        ws.column_dimensions[letter].width = max_width + 1
+#         ws.column_dimensions[letter].width = max_width + 1
+
+def create_connect_sheet(wb_object, title, types, data, excel_columns):
+    wb_object.add_header(types, title)
+    wb_object.add_main_data(data)
+    wb_object.edit_width_for_columns(excel_columns)
+
+def create_repair_sheet(wb_object, sheet_name, title, types, data, excel_columns):
+    wb_object.create_sheet(sheet_name)
+    wb_object.change_active_sheet(sheet_name)
+    create_connect_sheet(wb_object, title, types, data, excel_columns)
+    
 
 if __name__ == '__main__':
     us_parser = UsersideParser(us_auth_link, userside_payload, us_petrivskyy_params)
     abills_parser = AbillsParser(abills_auth_link, abills_payload, params=None)
     us_dicts = us_parser.parse()
     us_dicts.reverse()
-    excel_workfile = f"excel_data/tasks-{us_petrivskyy_params['date_finish2_date1']}-{us_petrivskyy_params['date_finish2_date2']}.xlsx"
+    excel_workfile = f"../excel_data/tasks-{us_petrivskyy_params['date_finish2_date1']}-{us_petrivskyy_params['date_finish2_date2']}.xlsx"
+    connect_title = f"Історія підключень за {us_petrivskyy_params['date_finish2_date1']}-{us_petrivskyy_params['date_finish2_date2']} (Петрівський Володимир Романович)"
+    letter_list = ['A', 'B', 'C', 'D', 'E']
+    mywb = MyWorkbook(excel_workfile, first_page='New Connection')
     
     only_new_conn = []
     for us_dict in us_dicts:
@@ -116,8 +131,10 @@ if __name__ == '__main__':
             us_dict["Contract ID"] = abills_parser.get_contract_id(us_dict["Firstname, Lastname"])
             # pprint(us_dict)
             only_new_conn.append(us_dict)
-            
-    save_in_excel_file(only_new_conn, 'New Connections', excel_workfile)
+    
+    create_connect_sheet(mywb, connect_title, list(only_new_conn[0].keys()), only_new_conn, letter_list)
+    create_repair_sheet(mywb, 'Repair', connect_title, list(only_new_conn[0].keys()), only_new_conn, letter_list)
+    # save_in_excel_file(only_new_conn, 'New Connections', excel_workfile)
     #edit_width_for_columns(excel_workfile)
 
             

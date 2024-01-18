@@ -24,19 +24,19 @@ class MyWorkbook():
         for counter in range(len(data)):
             self.ws.append(list(data[counter].values()))
         
-    def edit_width_for_columns(self, list_of_column):
-        for letter in list_of_column:
+    def edit_width_for_columns(self, list_of_excel_column):
+        for letter in list_of_excel_column:
             max_width = 0
             for row_number in range(1, self.ws.max_row + 1):
-                if len(self.ws[f'{letter}{row_number}'].value) > max_width:
-                    max_width = len(self.ws[f'{letter}{row_number}'].value) 
+                value = self.ws[f'{letter}{row_number}'].value
+                print(value)
+                if len(value) > max_width:
+                    max_width = len(value) 
             self.ws.column_dimensions[letter].width = max_width + 1
         
     def save_workbook(self):
         self.wb.save(self.wb_file)
-        
-if __name__ == '__main__':
-    test_wb = MyWorkbook()
+    
     
     
     
