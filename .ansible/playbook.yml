@@ -3,19 +3,19 @@
   connection: local
   tasks:
     - name: Build docker image
-      community.docker.docker_image:
+      docker_image:
         name: bot_image
         force_source: true
         source: build
         build:
-          path: .docker
+          path: .
 
     - name: Run docker container
-      community.docker.docker_container:
+      docker_container:
         name: bot
         image: bot_image
         restart: true
-        recreate: false
+        recreate: true
         env:
           user: "{{ GH_US_USER }}"
           pass: "{{ GH_US_UPASSWORD}}"
