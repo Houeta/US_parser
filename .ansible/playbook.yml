@@ -19,5 +19,5 @@
         recreate: true
         env:
           user: "{{ GH_US_USER }}"
-          pass: "{{ GH_US_UPASSWORD}}"
+          pass: "{{ GH_US_PASSWORD}}"
           API_TELEGRAM: "{{ GH_API_TELEGRAM }}"
