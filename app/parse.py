@@ -13,7 +13,7 @@ import pandas as pd
 import fake_useragent
 import urllib
 
-from my_parser import UsersideParser, AbillsParser
+from app.modules.my_parser import UsersideParser, AbillsParser
 
 parser = ArgumentParser()
 # group = parser.add_mutually_exclusive_group()
@@ -56,13 +56,13 @@ abills_payload = {
     "logined": "Enter",
 }
 
-def save_file(items, path):
-    with open(path, 'w', encoding='utf8', newline='') as f:
-        writer = csv.writer(f, delimiter=',')
-        writer.writerow(['Історія підключень за 11-2023p. (Петрівський Володимир Романович)'])
-        writer.writerow(['Дата','Тип задачі', '№ договору', 'ПІБ', 'Адреса'])
-        for item in items:
-            writer.writerow([item['exec_date'], item['task_type'], item['contract_id'], item['name'], item['address']])
+# def save_file(items, path):
+#     with open(path, 'w', encoding='utf8', newline='') as f:
+#         writer = csv.writer(f, delimiter=',')
+#         writer.writerow(['Історія підключень за 11-2023p. (Петрівський Володимир Романович)'])
+#         writer.writerow(['Дата','Тип задачі', '№ договору', 'ПІБ', 'Адреса'])
+#         for item in items:
+#             writer.writerow([item['exec_date'], item['task_type'], item['contract_id'], item['name'], item['address']])
 
 def save_in_excel_file(data, title, excel_workfile):
     wb = Workbook()
