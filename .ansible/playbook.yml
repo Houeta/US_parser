@@ -8,7 +8,8 @@
         force_source: true
         source: build
         build:
-          path: .docker
+          path: /home/ubnt/actions-runner/_work/US_parser/US_parser
+          dockerfile: .docker/Dockerfile
 
     - name: Run docker container
       docker_container:
