@@ -10,9 +10,6 @@
         build:
           path: /home/ubnt/actions-runner/_work/US_parser/US_parser
           dockerfile: .docker/Dockerfile
-          etc_hosts:
-            "us3.radionet.com.ua": "192.168.100.223"
-            "bill-admin2.radionet.com.ua": "10.255.255.234"
 
     - name: Run docker container
       docker_container:
@@ -20,6 +17,9 @@
         image: bot_image
         restart: true
         recreate: true
+        etc_hosts:
+          us3.radionet.com.ua: 192.168.100.223
+          bill-admin2.radionet.com.ua: 10.255.255.234
         env:
           user: "{{ GH_US_USER }}"
           pass: "{{ GH_US_PASSWORD}}"
