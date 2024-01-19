@@ -1,14 +1,8 @@
-import os
-import json
 import requests
 import re
-import time
 
 from bs4 import BeautifulSoup
-from dotenv import load_dotenv
-from pprint import pprint
 import fake_useragent
-import urllib
 
 class Parser():
     def __init__(self, auth_link, payload, params):
@@ -52,6 +46,9 @@ class UsersideParser(Parser):
         temp_dict['Task type'] = args[1]
         temp_dict['Address'] = args[4]
         
+        if 'Ремонт' in temp_dict['Task type']:
+            temp_dict['Comments'] = args[7].replace('<br>', "\n") if args[7] else 'Коментар відсутній'
+        
         return temp_dict
         
     def get_content(self, html):
@@ -61,11 +58,15 @@ class UsersideParser(Parser):
         for task in tasks:
             one_task_content = []
             for child_str in task.children:
-                task_data = child_str.get_text(strip=True)
+                if 'div_journal_opis' in child_str:
+                    task_data = child_str
+                else:
+                    task_data = child_str.get_text(strip=True)
                 if task_data:
                     one_task_content.append(task_data)
+            # print(one_task_content)
             task_content.append(self.task_wrapper(one_task_content))
-            
+        
         return task_content
     
     def parse(self):
