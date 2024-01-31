@@ -66,7 +66,7 @@ class MyWorkbook():
                     print(value)
                     counter = len(str(value).split('\n'))
                     max_height = counter if counter > max_height else max_height
-            self.ws.row_dimensions[row].height = max_height
+            self.ws.row_dimensions[row].height = None
         
     def save_workbook(self):
         self.wb.save(self.wb_file)

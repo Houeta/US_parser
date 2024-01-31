@@ -17,8 +17,8 @@ abills_auth_link = 'https://bill-admin2.radionet.com.ua:9443/admin/index.cgi?DOM
 
 userside_payload = {
     "action": "login",
-    "username": os.environ.get("user"),
-    "password": os.environ.get("pass"),
+    "username": "kushnirbv", # os.environ.get("user"),
+    "password": "Numags_wak1" # os.environ.get("pass"),
 }
 
 us_petrivskyy_params = {
@@ -39,8 +39,8 @@ abills_payload = {
     "REFERER": "https://bill-admin2.radionet.com.ua:9443/admin/index.cgi?DOMAIN_ID=&language=english",
     "LOGIN": "1",
     "language": "english",
-    "user": os.environ.get("user"),
-    "passwd": os.environ.get("pass"),
+    "user": "kushnirbv", # os.environ.get("user"),
+    "passwd": "Numags_wak1", # os.environ.get("pass"),
     "logined": "Enter",
 }
 

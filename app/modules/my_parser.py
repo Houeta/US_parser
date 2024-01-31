@@ -42,15 +42,28 @@ class UsersideParser(Parser):
         try:
             temp_dict['Firstname, Lastname'] = name.group(0).strip()
         except Exception:
-            temp_dict['Firstname, Lastname'] = 'NoneType'
+            temp_dict['Firstname, Lastname'] = f"Невірний синтакс: {args[5][:15]}..."
         temp_dict['Task type'] = args[1]
         temp_dict['Address'] = args[4]
         
         if 'Ремонт' in temp_dict['Task type']:
-            temp_dict['Comments'] = args[7].replace('<br>', "\n") if args[7] else 'Коментар відсутній'
+            temp_dict['Comments'] = args[7] if args[7] else 'Коментар відсутній'
         
         return temp_dict
-        
+    
+    def _extract_text_with_indentation(self, html):
+        try:
+            soup = BeautifulSoup(html, 'html.parser')
+            td_tag = soup.find('td')
+            
+            if td_tag:
+                extracted_text = td_tag.prettify(formatter=None)
+                return extracted_text
+            else:
+                raise ValueError('A tag <td> not found in entered HTML')
+        except Exception:
+            return None
+            
     def get_content(self, html):
         soup = BeautifulSoup(html, 'html.parser')
         tasks = soup.find_all('tr', {"class": "table_item"})
@@ -58,9 +71,9 @@ class UsersideParser(Parser):
         for task in tasks:
             one_task_content = []
             for child_str in task.children:
-                if 'div_journal_opis' in child_str:
-                    task_data = child_str
-                else:
+                print(child_str)
+                task_data = self._extract_text_with_indentation(child_str)
+                if not task_data:
                     task_data = child_str.get_text(strip=True)
                 if task_data:
                     one_task_content.append(task_data)
