@@ -38,7 +38,7 @@ class UsersideParser(Parser):
         temp_dict = dict()
         temp_dict['Execution date'] = args[3]
         temp_dict['Contract ID'] = None
-        name = re.search(r"\w+\s+\w+\s+\w+", args[5])
+        name = re.search(r"\S+\s+\S+\s+\S+", args[5])
         try:
             temp_dict['Firstname, Lastname'] = name.group(0).strip()
         except Exception:
@@ -47,7 +47,10 @@ class UsersideParser(Parser):
         temp_dict['Address'] = args[4]
         
         if 'Ремонт' in temp_dict['Task type']:
-            temp_dict['Comments'] = args[7] if args[7] else 'Коментар відсутній'
+            try:
+                temp_dict['Comments'] = args[7]
+            except IndexError:
+                temp_dict['Comments'] = "Коментар відсутній"
         
         return temp_dict
     

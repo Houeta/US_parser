@@ -74,8 +74,12 @@ if __name__ == '__main__':
     only_new_conn = []
     repairs = []
     for us_dict in us_dicts:
-        if 'Новое подключение' in us_dict['Task type']:
-            us_dict["Contract ID"] = abills_parser.get_contract_id(us_dict["Firstname, Lastname"])
+        if 'Новое подключени' in us_dict['Task type']:
+            print(us_dict)
+            try:
+                us_dict["Contract ID"] = abills_parser.get_contract_id(us_dict["Firstname, Lastname"])
+            except AttributeError:
+                us_dict["Contract ID"] = "Incorrect_ID"
             only_new_conn.append(us_dict)
         if 'Ремонт' in us_dict['Task type']:
             repairs.append(us_dict)
