@@ -10,10 +10,10 @@
         build:
           path: /home/ubnt/actions-runner/_work/US_parser/US_parser
           dockerfile: .docker/Dockerfile
-        env:
-          user: "{{ GH_US_USER }}"
-          pass: "{{ GH_US_PASSWORD}}"
-          API_TELEGRAM: "{{ GH_API_TELEGRAM }}"
+          args:
+            user: "{{ GH_US_USER }}"
+            pass: "{{ GH_US_PASSWORD}}"
+            API_TELEGRAM: "{{ GH_API_TELEGRAM }}"
 
     - name: Run docker container
       docker_container:
