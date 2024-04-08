@@ -20,6 +20,7 @@
         name: bot
         image: bot_image
         restart: true
+        restart_policy: always
         recreate: true
         etc_hosts:
           us3.radionet.com.ua: 192.168.100.223
