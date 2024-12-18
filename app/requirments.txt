@@ -1,7 +1,7 @@
 ##### Requirments for telegram_bot #####
 python-dotenv
 dotenv-python
-telebot
+pyTelegramBotAPI==4.25.0
 
 
 ##### Requirments for my_parser #####

@@ -1,17 +1,20 @@
-FROM python:alpine
+FROM python:3.10-alpine
 
 ARG user
 ARG pass
 ARG API_TELEGRAM
 
-ENV user=${user}
-ENV pass=${pass}
-ENV API_TELEGRAM=${API_TELEGRAM}
+ENV user=${user} \
+    pass=${pass} \
+    API_TELEGRAM=${API_TELEGRAM}
 
-WORKDIR /usbot
+WORKDIR /app
 
 COPY app .
 
-RUN pip install -r requirments.txt
+RUN apk add --no-cache gcc musl-dev libffi-dev openssl-dev && \
+    pip install --no-cache-dir -r requirments.txt
 
-ENTRYPOINT [ "python", "telegram_bot.py" ]
+RUN python -m compileall .
+
+ENTRYPOINT [ "python", "bot/bot.py" ]
