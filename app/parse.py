@@ -146,8 +146,17 @@ def main():
             repairs.append(us_dict)
     
     # Create Excel sheets
-    create_excel_sheet(mywb, "Connections", connect_title, list(only_new_conn[0].keys()), only_new_conn, letter_list)
-    create_excel_sheet(mywb, "Repairs", repair_title, list(repairs[0].keys()), repairs, letter_list)
+    if only_new_conn:
+        logging.info(f"Creating Excel sheet for New Connections")
+        create_excel_sheet(mywb, "Connections", connect_title, list(only_new_conn[0].keys()), only_new_conn, letter_list)
+    else:
+        logging.error("Connections list is empty. Sheet will not be created")
+    
+    if repairs:
+        logging.info(f"Creating Excel sheet for Repairs")
+        create_excel_sheet(mywb, "Repairs", repair_title, list(repairs[0].keys()), repairs, letter_list)
+    else:
+        logging.error("Repairs list is empty. Sheet will not be created")
 
     logging.info(f"Data has been saved to {wb_path}")
 
